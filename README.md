@@ -1,3 +1,5 @@
+|[![PGP Web App CI](https://github.com/bylickilabs/PGP-Web_App/actions/workflows/main.yml/badge.svg)](https://github.com/bylickilabs/PGP-Web_App/actions/workflows/main.yml)|
+|---|
 
 # 🔐 PGP Web App
 
