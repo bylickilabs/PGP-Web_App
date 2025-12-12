@@ -1,13 +1,20 @@
-name: PGP Web App CI
+name: PGP Web App – Secure CI Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
   build:
+    name: Build & Security Validation
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,20 +22,31 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - name: 📥 Repository klonen
+
+      - name: 📥 Repository auschecken
         uses: actions/checkout@v4
 
       - name: ⚙️ Node.js einrichten
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: npm
 
-      - name: 📦 Abhängigkeiten installieren
-        run: npm install
+      - name: 🔐 node-forge Security Override erzwingen
+        run: |
+          npm pkg set overrides.node-forge="^1.3.2"
 
-      - name: ✅ TypeScript prüfen
+      - name: 📦 Abhängigkeiten installieren (npm ci)
+        run: npm ci
+
+      - name: ✅ TypeScript Validierung
         run: npx tsc --noEmit
 
-      - name: 🛠 Build prüfen
+      - name: 🛠 Produktions-Build
         run: npm run build
+
+      - name: 🔍 Security Audit (kritische CVEs)
+        run: npm audit --production --audit-level=critical
+
+      - name: 🧾 Verifizieren der node-forge Version
+        run: npm ls node-forge || true
