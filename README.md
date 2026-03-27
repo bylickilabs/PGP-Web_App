@@ -28,7 +28,7 @@ Alle Operationen sind vollständig clientseitig (Browser), ohne Server-Abhängig
 ### Projekt Setup
 
 ```bash
-git clone https://github.com/bylickilabs/PGP-Web-App.git
+git clone https://github.com/bylickilabs/PGP-Web_App.git
 cd PGP-Web-App
 npm install
 npm start
